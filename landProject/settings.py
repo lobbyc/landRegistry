@@ -138,3 +138,5 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "media_cdn")
 
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+ALLOWED_HOSTS=["*"]
