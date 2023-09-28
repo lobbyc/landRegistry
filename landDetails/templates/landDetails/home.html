@@ -1,0 +1,21 @@
+{% extends 'main.html' %}
+
+{% block content %}
+
+<h1>Home Templates</h1>
+
+<div >
+
+    <div>
+        {% for land in lands %}
+
+        <div>
+            <h4>{{land.id}} -- {{land.name}}</h4>
+        </div>
+
+        {% endfor %}
+    </div>
+
+</div>
+
+{% endblock content %}
