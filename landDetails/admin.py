@@ -10,7 +10,7 @@ from django.urls import reverse
 import csv
 
 # Import your models
-from .models import Landmark, Location, OwnerDetail, GreenCard
+from .models import Landmark, Location, OwnerDetail, GreenCard, Documents
 
 # Customize the site header
 admin.site.site_header = "Land Registry"
@@ -21,7 +21,13 @@ class LandmarkAdmin(admin.ModelAdmin):
         
     get_image.short_description = "Image"
     
-    list_display = ['location', 'owner', 'deed_no', 'sheet_no', 'get_image']
+    def owner_link(self, obj):
+        owner_detail_url = reverse('admin:%s_%s_change' % (obj.owner._meta.app_label, obj.owner._meta.model_name),  args=[obj.owner.pk])
+        return format_html('<a href="{}">{}</a>', owner_detail_url, obj.owner)
+
+    owner_link.short_description = 'Owner'
+
+    list_display = ['location', 'owner_link', 'deed_no', 'sheet_no', 'get_image']
     search_fields = ['sheet_no', 'deed_no']
 
 class GreenCardAdmin(admin.ModelAdmin):
@@ -72,9 +78,25 @@ class OwnerAdmin(admin.ModelAdmin):
     list_display = ['first_name','last_name','email','id_number']
 
 
+class DocumentAdmin(admin.ModelAdmin):
+    model = Documents
+    list_display = ['landmark','lease_get_image','rent_get_image']
+
+    def lease_get_image(self, obj):
+        return format_html('<img src="{}" width="50" height="50" />', obj.lease.url)
+    
+    lease_get_image.short_description = 'Lease Documment'
+
+    def rent_get_image(self, obj):
+       return format_html('<img src="{}" width="50" height="50" />', obj.rent.url)
+    rent_get_image.short_description = 'Lease Documment'
+
+
+
 admin.site.register(Landmark, LandmarkAdmin)
 admin.site.register(Location, LocationAdmin)
 admin.site.register(OwnerDetail, OwnerAdmin)
 admin.site.register(GreenCard, GreenCardAdmin)
+admin.site.register(Documents, DocumentAdmin)
 
 

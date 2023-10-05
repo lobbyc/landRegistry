@@ -4,8 +4,14 @@ from django.contrib.auth.models import User
 # Create your models here.
 
 def upload_location(instance, filename):
+    file_path = "images/{landmark}-{filename}".format(
+        landmark=str(instance.landmark.id), filename=filename
+    )
+    return file_path
+
+def document_upload_location(instance, filename):
     file_path = "images/{county}-{filename}".format(
-        county=str(instance.location.id), filename=filename
+        county=str(instance.landmark.id), filename=filename
     )
     return file_path
 
@@ -54,3 +60,8 @@ class GreenCard(models.Model):
         # Set the card_number to the deed_no of the associated Landmark
         self.card_number = self.land.deed_no
         super(GreenCard, self).save(*args, **kwargs)
+
+class Documents(models.Model):
+    landmark = models.ForeignKey(Landmark, on_delete=models.CASCADE)
+    lease = models.ImageField(null=True, upload_to=document_upload_location)
+    rent = models.ImageField(null=True,upload_to= document_upload_location)
