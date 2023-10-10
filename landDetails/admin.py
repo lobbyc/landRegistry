@@ -10,7 +10,7 @@ from django.urls import reverse
 import csv
 
 # Import your models
-from .models import Landmark, Location, OwnerDetail, GreenCard, Documents
+from .models import Landmark, Location, OwnerDetail, GreenCard, Documents, Transactions
 
 # Customize the site header
 admin.site.site_header = "Land Registry"
@@ -89,8 +89,11 @@ class DocumentAdmin(admin.ModelAdmin):
 
     def rent_get_image(self, obj):
        return format_html('<img src="{}" width="50" height="50" />', obj.rent.url)
-    rent_get_image.short_description = 'Lease Documment'
+    rent_get_image.short_description = 'Rent Documment'
 
+class TransactionAdmin(admin.ModelAdmin):
+    model = Transactions
+    list_display =['land','documents','ammount', 'rentee']
 
 
 admin.site.register(Landmark, LandmarkAdmin)
@@ -98,5 +101,5 @@ admin.site.register(Location, LocationAdmin)
 admin.site.register(OwnerDetail, OwnerAdmin)
 admin.site.register(GreenCard, GreenCardAdmin)
 admin.site.register(Documents, DocumentAdmin)
-
+admin.site.register(Transactions,TransactionAdmin)
 

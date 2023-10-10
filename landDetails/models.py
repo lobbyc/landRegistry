@@ -65,3 +65,18 @@ class Documents(models.Model):
     landmark = models.ForeignKey(Landmark, on_delete=models.CASCADE)
     lease = models.ImageField(null=True, upload_to=document_upload_location)
     rent = models.ImageField(null=True,upload_to= document_upload_location)
+
+    def __str__(self):
+        return self.landmark.name
+
+
+class Transactions(models.Model):
+    land = models.ForeignKey(Landmark, on_delete=models.CASCADE)
+    documents = models.ForeignKey(Documents, on_delete=models.CASCADE)
+    ammount = models.IntegerField()
+    rentee = models.ForeignKey(OwnerDetail, on_delete=models.CASCADE)
+    # transaction_id = models.BigAutoField(unique=True, null=True)
+
+    def __str__(self):
+        return self.land.name
+
